@@ -65,8 +65,8 @@ while True:
 
                 if iHapus < 1 or iHapus > len(kontak):
                     print("Nomor kontak tidak valid!")
-
                     continue
+
             except ValueError:
                 print("Input harus berupa angka!")
                 continue
