@@ -6,7 +6,7 @@ class AkunBank:
 
     def lihat_rekening(self):
         print('\nRekening:', self.nomor_rekening)
-        print('Saldo: Rp.', f"{self._saldo:,}".replace(",", "."))  # Format ribuan pakai titik
+        print('Saldo: Rp.', f"{self._saldo:,}".replace(",", "."))
 
     def tambah_saldo(self, tambah):
         self._saldo += tambah
@@ -31,10 +31,30 @@ class AkunBank:
         else:
             print('❌ PIN lama yang Anda masukkan salah!')
 
+    def verifikasi_pin(self, pin):
+        return pin == self.__pin
 
-# Buat akun awal
+
+# Inisialisasi akun
 akun = AkunBank("1234567890", 0)
 
+# 🔐 Verifikasi PIN sebelum akses menu
+print("=== SELAMAT DATANG DI BANKKU ===")
+for _ in range(3):  # Maksimal 3 percobaan
+    try:
+        pin_masuk = int(input("Masukkan PIN Anda untuk masuk: "))
+        if akun.verifikasi_pin(pin_masuk):
+            print("✅ PIN benar. Akses diberikan.")
+            break
+        else:
+            print("❌ PIN salah.")
+    except ValueError:
+        print("❌ PIN harus berupa angka.")
+else:
+    print("🚫 Terlalu banyak percobaan. Akses ditolak.")
+    exit()  # Keluar dari program jika 3x gagal
+
+# Menu utama
 while True:
     print('\n===== Menu Rekening Bank =====')
     print('1. Lihat rekening')
