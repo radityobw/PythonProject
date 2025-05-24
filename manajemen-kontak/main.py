@@ -1,14 +1,35 @@
 # MANAJEMEN KONTAK
+import os
+
+# Dapatkan path folder tempat file main.py berada
+BASE_DIR = os.path.dirname(os.path.abspath(__file__))
+KONTAK_PATH = os.path.join(BASE_DIR, 'kontak.txt')
+
+# Cek apakah file sudah ada, jika tidak, buat file kosong
+if not os.path.exists(KONTAK_PATH):
+    with open(KONTAK_PATH, 'w') as f:
+        pass  # buat file kosong
+
+
+
+def membuka_kontak(path=KONTAK_PATH):
+    with open(path, 'r') as file:
+        kontak = file.readlines()
+        return kontak
+
+def menyimpan_kontak(path=KONTAK_PATH, isi=[]):
+    with open(path, 'w') as file:
+        file.writelines(isi)
 
 class Kontak:
     def __init__(self):
-        self.kontak = []
+        self.kontak = membuka_kontak()
 
     def melihat_kontak(self):
         # melihat semua kontak
         if self.kontak:
             for num, item in enumerate(self.kontak, start=1):
-                print(f"\n{num}. {item['nama']} ({item['no HP']}, {item['email']})")
+                print(f"\n{num}. " + item)
         else:
             print("\nKontak kosong!")
 
@@ -20,7 +41,7 @@ class Kontak:
             konfirmasi = input('Apakah informasi sudah benar? (ya/tidak/kembali): ')
 
             if konfirmasi == 'ya':
-                kontakBaru = {'nama': nama, 'no HP': no_HP, 'email': email}
+                kontakBaru = f'{nama} ({no_HP}, {email})' + '\n'
                 self.kontak.append(kontakBaru)
                 print("\nKontak baru berhasil ditambahkan!")
                 break  # keluar dari sub-loop setelah berhasil
@@ -60,7 +81,10 @@ class Kontak:
                 print("\nInput salah! Silakan pilih 'ya', 'tidak' atau 'kembali'.")
                 continue
 
-kontak_keluarga = Kontak()
+    def keluar_kontak(self):
+        menyimpan_kontak(isi=self.kontak)
+
+kontakku = Kontak()
 
 while True:
     print('\n------------------------')
@@ -75,19 +99,20 @@ while True:
     pilihan = input("Masukkan pilihan menu kontak (1,2,3,4): ")
 
     if pilihan == '1':
-        kontak_keluarga.melihat_kontak()
+        kontakku.melihat_kontak()
 
     elif pilihan == '2':
-        kontak_keluarga.menambah_kontak()
+        kontakku.menambah_kontak()
 
     elif pilihan == '3':
-        if not kontak_keluarga.kontak:
+        if not kontakku.kontak:
             print("\nKontak kosong!")
             continue
-        kontak_keluarga.menghapus_kontak()
+        kontakku.menghapus_kontak()
 
     elif pilihan == '4':
         # keluar dari kontak
+        kontakku.keluar_kontak()
         break
 
     else:
